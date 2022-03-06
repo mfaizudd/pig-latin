@@ -13,12 +13,10 @@ fn main() {
     let mut pig_latin: Vec<String> = Vec::new();
     for word in words {
         let chars = word.char_indices();
-        let end = match chars.map(|(i,_)| i).nth(0) {
-            Some(i) => i,
-            None => {
-                println!("Please enter some word");
-                return;
-            },
+        let end = if let Some(i) = chars.map(|(i, _)| i).nth(0) {
+            i
+        } else {
+            return;
         };
         if vowels.contains(&word[..end]) {
             pig_latin.push(format!("{}-hay", &word));
