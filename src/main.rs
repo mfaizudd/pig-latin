@@ -10,20 +10,21 @@ fn main() {
     }
     let vowels = "aiueo";
     let words = sentence.trim().split_whitespace();
-    let mut pig_latin: Vec<String> = Vec::new();
+    let mut pig_latin = Vec::new();
     for word in words {
-        let chars = word.char_indices();
-        let first_letter = if let Some(c) = chars.map(|(_, c)| c).nth(0) {
-            c
-        } else {
-            return;
-        };
-        let end = first_letter.len_utf8();
-        if vowels.contains(first_letter) {
+        let mut consonants = String::new();
+        for c in word.chars() {
+            if vowels.contains(c) {
+                break;
+            }
+            consonants.push(c);
+        }
+        let end = consonants.len();
+        if end == 0 {
             pig_latin.push(format!("{}-hay", &word));
             continue;
         }
-        pig_latin.push(format!("{}{}ay", &word[end..], &first_letter));
+        pig_latin.push(format!("{}{}ay", &word[end..], &consonants));
     }
     println!("{}", pig_latin.join(" "));
 }
