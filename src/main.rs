@@ -12,11 +12,19 @@ fn main() {
     let words = sentence.trim().split_whitespace();
     let mut pig_latin: Vec<String> = Vec::new();
     for word in words {
-        if vowels.contains(&word[..1]) {
+        let chars = word.char_indices();
+        let end = match chars.map(|(i,_)| i).nth(0) {
+            Some(i) => i,
+            None => {
+                println!("Please enter some word");
+                return;
+            },
+        };
+        if vowels.contains(&word[..end]) {
             pig_latin.push(format!("{}-hay", &word));
             continue;
         }
-        pig_latin.push(format!("{}{}ay", &word[1..], &word[..1]))
+        pig_latin.push(format!("{}{}ay", &word[end..], &word[..end]));
     }
     println!("{}", pig_latin.join(" "));
 }
