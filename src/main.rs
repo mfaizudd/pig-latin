@@ -13,16 +13,17 @@ fn main() {
     let mut pig_latin: Vec<String> = Vec::new();
     for word in words {
         let chars = word.char_indices();
-        let end = if let Some(i) = chars.map(|(i, _)| i).nth(0) {
-            i
+        let first_letter = if let Some(c) = chars.map(|(_, c)| c).nth(0) {
+            c
         } else {
             return;
         };
-        if vowels.contains(&word[..end]) {
+        let end = first_letter.len_utf8();
+        if vowels.contains(first_letter) {
             pig_latin.push(format!("{}-hay", &word));
             continue;
         }
-        pig_latin.push(format!("{}{}ay", &word[end..], &word[..end]));
+        pig_latin.push(format!("{}{}ay", &word[end..], &first_letter));
     }
     println!("{}", pig_latin.join(" "));
 }
